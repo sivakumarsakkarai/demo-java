@@ -1,5 +1,5 @@
 pipeline {
-    eenvironment{
+    environment{
         registry = "sivakumarsakkarai/demo-java"
         registryCredential = ‘docker_sk’
     }
@@ -27,7 +27,8 @@ pipeline {
             }
         stage("Building Image"){
             steps{
-                docker.build registry + ":$BUILD_NUMBER"
+                sh 'docker.build -f "Dockerfile" -t registry:$BUILD_NUMBER .'
+                
             }
         }
     }
