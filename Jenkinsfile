@@ -1,4 +1,8 @@
 pipeline {
+    eenvironment{
+        registry = "sivakumarsakkarai/demo-java"
+        registryCredential = ‘docker_sk’
+    }
     agent any
     stages{
         stage("Git CheckOut"){
@@ -20,8 +24,11 @@ pipeline {
                     waitForQualityGate abortPipeline: true
                     }
                 }
-
-
+            }
+        stage("Building Image"){
+            steps{
+                docker.build registry + ":$BUILD_NUMBER"
             }
         }
     }
+}
