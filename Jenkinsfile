@@ -27,7 +27,7 @@ pipeline {
             }
         stage("Building Image"){
             steps{
-                sh 'docker build -f "Dockerfile" -t registry:$BUILD_NUMBER .'
+                sh 'docker build -f "Dockerfile" -t sivakumarsakkarai/demo-java:$BUILD_NUMBER .'
                 
             }
         }
