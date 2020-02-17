@@ -7,7 +7,7 @@ pipeline {
     stages{
         stage("Git CheckOut"){
             steps{
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github_sk', url: 'https://github.com/sivakumarsakkarai/demo-java.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GitHubSK', url: 'https://github.com/sivakumarsakkarai/demo-java.git']]])
             }
         }
         stage("build & SonarQube analysis"){
