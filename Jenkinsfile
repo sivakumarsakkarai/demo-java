@@ -1,7 +1,6 @@
 pipeline {
     environment{
-        registry = "sivakumarsakkarai/demo-java"
-        registryCredential = "docker_sk"
+        PATH= "/opt/maven/bin:$PATH"
     }
     agent any
     stages{
