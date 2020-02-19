@@ -1,7 +1,7 @@
       pipeline {
           environment {
           registry = "sivakumarsakkarai/demo-java"
-          registryCredential = "dockerhub"
+          registryCredential = 'dockerhub'
           }
         agent none
         stages {
