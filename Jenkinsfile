@@ -23,7 +23,7 @@
           stage("Building Image"){
             steps{       
                 sh 'bin/build'  
-                sh 'docker build -t registry + ":$BUILD_NUMBER" .'
+                sh 'docker build -t sivakumarsakkarai/demo-java .'
             }
           }  
         }
