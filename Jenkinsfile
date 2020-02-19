@@ -2,10 +2,10 @@
           environment {
           registry = "sivakumarsakkarai/demo-java"
           registryCredential = 'dockerhub'
-          }        
+          }
+        agent any    
         stages {
-          stage("build & SonarQube analysis") {
-            agent any
+          stage("build & SonarQube analysis") {            
             steps {
               withSonarQubeEnv('df-sonar') {
                 sh 'mvn clean package sonar:sonar'
