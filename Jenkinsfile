@@ -20,7 +20,8 @@
             }
           }
           stage("Building Image"){
-            steps{                
+            steps{       
+                sh 'bin/build'  
                 sh 'docker build -t sivakumarsakkarai/demo-java .'
             }
           }  
