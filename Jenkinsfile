@@ -21,10 +21,8 @@
             }
           }
           stage("Building Image"){
-            steps{
-                script {
-                docker.build registry + ":$BUILD_NUMBER"
-                }
+            steps{                
+                sh 'docker.build registry + ":$BUILD_NUMBER"'
             }
           }  
         }
