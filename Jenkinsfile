@@ -1,10 +1,14 @@
       pipeline {
+          environment {
+          registry = "sivakumarsakkarai/demo-java"
+          registryCredential = "dockerhub"
+          }
         agent none
         stages {
           stage("build & SonarQube analysis") {
             agent any
             steps {
-              withSonarQubeEnv('df-sonar') {
+              withSonarQubeEnv('My SonarQube Server') {
                 sh 'mvn clean package sonar:sonar'
               }
             }
@@ -16,5 +20,12 @@
               }
             }
           }
+          stage("Building Image"){
+            steps{
+                script {
+                docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+          }  
         }
       }
