@@ -21,7 +21,7 @@
           }
           stage("Building Image"){
             steps{                
-                sh 'docker.build registry + ":$BUILD_NUMBER"'
+                sh 'docker build -t registry + ":$BUILD_NUMBER" .'
             }
           }  
         }
