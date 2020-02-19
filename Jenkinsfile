@@ -6,8 +6,7 @@ pipeline {
     agent any    
     stages{
         stage("build & SonarQube analysis"){
-            steps{
-                def mvnHome =  tool name: 'M2_HOME', type: 'maven'
+            steps{                
                 withSonarQubeEnv('df-sonar'){
                     sh "${mvnHome}/bin/mvn sonar:sonar"
                 } 
@@ -22,8 +21,10 @@ pipeline {
                 }
             }
         stage("Building Image"){
-            steps{                
+            steps{
+                script {
                 docker.build registry + ":$BUILD_NUMBER"              
+                }
             }
         }
     }
