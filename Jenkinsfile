@@ -1,18 +1,15 @@
 pipeline {
-    environment{
-        PATH= "/opt/maven/bin:$PATH"
+    environment {
+    registry = "sivakumarsakkarai/demo-java"
+    registryCredential = "dockerhub"
     }
-    agent any
+    agent any    
     stages{
-        stage("Git CheckOut"){
-            steps{
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GitHubSK', url: 'https://github.com/sivakumarsakkarai/demo-java.git']]])
-            }
-        }
         stage("build & SonarQube analysis"){
             steps{
+                def mvnHome =  tool name: 'M2_HOME', type: 'maven'
                 withSonarQubeEnv('df-sonar'){
-                    sh 'mvn clean package sonar:sonar'
+                    sh "${mvnHome}/bin/mvn sonar:sonar"
                 } 
 
             }
@@ -25,9 +22,8 @@ pipeline {
                 }
             }
         stage("Building Image"){
-            steps{
-                sh 'docker build -f "Dockerfile" -t sivakumarsakkarai/demo-java:$BUILD_NUMBER .'
-                
+            steps{                
+                docker.build registry + ":$BUILD_NUMBER"              
             }
         }
     }
