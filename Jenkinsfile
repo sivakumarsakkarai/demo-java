@@ -22,7 +22,7 @@
           stage("Building Image"){
             steps{       
                 sh 'bin/build'  
-                sh 'docker build -t sivakumarsakkarai/demo-java +":$BUILD_NUMBER" .'
+                sh 'docker build -t sivakumarsakkarai/demo-java:"$BUILD_NUMBER" .'
             }
           }  
         }
