@@ -8,7 +8,7 @@ pipeline {
         stage("build & SonarQube analysis"){
             steps{                
                 withSonarQubeEnv('df-sonar'){
-                    sh "${mvnHome}/bin/mvn sonar:sonar"
+                    sh 'mvn clean install'
                 } 
 
             }
