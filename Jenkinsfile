@@ -2,8 +2,7 @@
           environment {
           registry = "sivakumarsakkarai/demo-java"
           registryCredential = 'dockerhub'
-          }
-        agent none
+          }        
         stages {
           stage("build & SonarQube analysis") {
             agent any
