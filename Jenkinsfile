@@ -2,6 +2,7 @@
           environment {
           registry = "sivakumarsakkarai/demo-java"
           registryCredential = 'dockerhub'
+          dockerImage=''
           }
         agent any    
         stages {
@@ -22,7 +23,7 @@
           stage("Building Image"){
             steps{       
                 sh 'bin/build'  
-                sh 'docker build -t sivakumarsakkarai/demo-java:"$BUILD_NUMBER" .'
+                dockerImage= sh 'docker build -t sivakumarsakkarai/demo-java:"$BUILD_NUMBER" .'
             }
           }  
         }
