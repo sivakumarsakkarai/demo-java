@@ -21,7 +21,7 @@
           }
           stage("Building Image"){
             steps{                
-                sh 'docker build -f Dockerfile . -t sivakumarsakkarai/demo-java ":$BUILD_NUMBER"'
+                sh 'docker build -t sivakumarsakkarai/demo-java'
             }
           }  
         }
