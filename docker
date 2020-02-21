@@ -1,4 +1,9 @@
-pipeline {     
+pipeline {
+    environment {
+    registry = 'sivakumarsakkarai/demo-java'
+    registryCredential = 'dockerhub'
+    dockerImage=''
+    }
     agent any    
     stages {
       stage("build & SonarQube analysis") {            
