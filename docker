@@ -1,4 +1,9 @@
-pipeline {    
+pipeline {
+    environment {
+    registry = 'sivakumarsakkarai/demo-java'
+    registryCredential = 'dockerhub'
+    dockerImage=''
+    }
     agent any    
     stages {
       stage("build & SonarQube analysis") {            
@@ -21,11 +26,12 @@ pipeline {
             sh 'docker build -t sivakumarsakkarai/demo-java:latest .'
           }
         }
-       stage("Push Image"){
-         steps{            
-                sh 'docker login'         
-                sh 'docker push sivakumarsakkarai/demo-java:latest'      
+       stage("Push Image){
+         steps{
+            withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
+                sh 'docker push sivakumarsakkarai/demo-java:latest'
+            }
          }
+        }
     }
-}
 }
