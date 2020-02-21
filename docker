@@ -9,7 +9,13 @@ pipeline {
         stage('Building image') {
           steps{
             script {
-                dockerImage = docker.build("${registry}":"${BUILD_NUMBER}")
+                def dockerImage = docker.build("${registry}":"${BUILD_NUMBER}")
+                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
+                   def customImage = docker.build(imageName)
+                   customImage.push("${newVersion}")
+                   customImage.push("latest")
+                   sh "docker rmi --force \$(docker images -q ${customImage.id} | uniq)"
+                }
             }
            }
         }
