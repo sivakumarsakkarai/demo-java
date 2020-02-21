@@ -1,9 +1,4 @@
-pipeline {
-    environment {
-    registry = 'sivakumarsakkarai/demo-java'
-    registryCredential = 'dockerhub'
-    dockerImage=''
-    }
+pipeline {     
     agent any    
     stages {
       stage("build & SonarQube analysis") {            
@@ -29,7 +24,7 @@ pipeline {
        stage("Push Image"){
          steps{
             withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerpass', usernameVariable: 'dockeruser')]) {    
-                sh "docker login -u ${env.dockeruser} -p ${env.dockerpass}"
+                sh 'docker login -u "$dockeruser" -p "$dockerpass"'
                 sh 'docker push sivakumarsakkarai/demo-java:latest'
             }
          }
