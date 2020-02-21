@@ -28,7 +28,8 @@ pipeline {
         }
        stage("Push Image"){
          steps{
-            withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerpass', usernameVariable: 'dockeruser')]) {    
+                sh "docker login -u ${env.dockeruser} -p ${env.dockerpass}"
                 sh 'docker push sivakumarsakkarai/demo-java:latest'
             }
          }
