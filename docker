@@ -1,23 +1,32 @@
-pipeline {
-    environment {
-       registry = "sivakumarsakkarai/demo-java"
-       registryCredential = 'dockerhub'
-       dockerImage= ''
-    }
-    agent any
-    stages{
-        stage('Building image') {
-          steps{
-            script {
-                def dockerImage = docker.build("${registry}":"${BUILD_NUMBER}")
-                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
-                   def customImage = docker.build(imageName)
-                   customImage.push("${newVersion}")
-                   customImage.push("latest")
-                   sh "docker rmi --force \$(docker images -q ${customImage.id} | uniq)"
-                }
-            }
+pipeline {    
+    agent any    
+    stages {
+      stage("build & SonarQube analysis") {            
+        steps {
+          withSonarQubeEnv('df-sonar') {
+            sh 'mvn clean package sonar:sonar'
            }
+        }
+       }
+       stage("Quality Gate") {
+         steps {
+            timeout(time: 1, unit: 'HOURS') {
+              waitForQualityGate abortPipeline: true
+              }
+            }
+          }
+       stage("Building Image"){
+          steps{       
+            sh 'bin/build'  
+            sh 'docker build -t sivakumarsakkarai/demo-java:$"{BUILD_NUMBER}" .'
+          }
+        }
+       stage("Push Image){
+         steps{
+            withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
+                sh 'docker push sivakumarsakkarai/demo-java:"${BUILD_NUMBER}"'
+            }
+         }
         }
     }
 }
