@@ -1,0 +1,41 @@
+pipeline {
+    environment {
+    registry = "sivakumarsakkarai/demo-java"
+    registryCredential = 'dockerhub'
+    dockerImage= ""
+    }
+    agent any    
+    stages {
+      stage("build & SonarQube analysis") {            
+        steps {
+          withSonarQubeEnv('df-sonar') {
+            sh 'mvn clean package sonar:sonar'
+           }
+        }
+       }
+       stage("Quality Gate") {
+         steps {
+            timeout(time: 1, unit: 'HOURS') {
+              waitForQualityGate abortPipeline: true
+              }
+            }
+          }
+       stage("Building Image"){
+          steps{       
+            scripts{
+              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            }
+            
+            
+          }
+        }
+       stage("Push Image"){
+         steps{
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerpass', usernameVariable: 'dockeruser')]) {    
+                sh 'docker login -u "$dockeruser" -p "$dockerpass"'
+                sh 'docker push sivakumarsakkarai/demo-java:latest'
+            }
+         }
+        }
+    }
+}
