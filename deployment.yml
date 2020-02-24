@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: java-pvc
+spec:
+  storageClassName: dfsc
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: java
+  name: java
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: java
+  template:
+    metadata:
+      labels:
+        run: java
+    spec:
+      volumes:
+      - name: tc
+        persistentVolumeClaim:
+          claimName: java-pvc
+      containers:
+      - image: java
+        name: java
+        volumeMounts:
+        - name: tc
+          mountPath: /usr/local/tomcat  
+      nodeSelector:
+        demoserver: "true"
+        
