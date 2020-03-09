@@ -7,7 +7,7 @@
           stage("build & SonarQube analysis") {
             steps {
               withSonarQubeEnv('sonar') {
-                sh 'mvn clean package sonar:sonar'
+                sh "${mvnHome}/bin/mvn clean package sonar:sonar"
               }
             }
           }
