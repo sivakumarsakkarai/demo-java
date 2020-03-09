@@ -2,6 +2,7 @@
           environment {
           def mvnHome = tool name: 'maven', type: 'maven'
           }
+        agent any  
         stages {
           stage("build & SonarQube analysis") {
             steps {
