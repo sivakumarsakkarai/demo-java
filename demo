@@ -3,13 +3,14 @@ pipeline {
     registry = "sivakumarsakkarai/demo-java"
     registryCredential = 'dockerhub'
     dockerImage = ""
+    def mvnHome = tool name: 'maven', type: 'maven'
     }
     agent any    
     stages {
       stage("build & SonarQube analysis") {            
         steps {
           withSonarQubeEnv('df-sonar') {
-            sh 'mvn clean package sonar:sonar'
+            sh "${mvnHome}/bin/mvn clean package sonar:sonar"
            }
         }
        }
