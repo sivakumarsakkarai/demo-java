@@ -19,23 +19,6 @@ pipeline {
               waitForQualityGate abortPipeline: true
               }
             }
-          }
-       stage("Building Image"){
-          steps{       
-            scripts{
-              dockerImage = docker.build registry + ":$BUILD_NUMBER"
-            }
-            
-            
-          }
-        }
-       stage("Push Image"){
-         steps{
-            withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerpass', usernameVariable: 'dockeruser')]) {    
-                sh 'docker login -u "$dockeruser" -p "$dockerpass"'
-                sh 'docker push sivakumarsakkarai/demo-java:latest'
-            }
-         }
         }
     }
 }
